@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+            https://cordova.apache.org/docs/en/latest/
+        Some notes:
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://api.loanmita.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="vendors/iconsax-gh-pages/style.css">
+        <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="vendors/nouislider/nouislider.min.css">
+        <link rel="stylesheet" href="css/dash.css">
+        <title>Paymita Dasboard</title>
+    </head>
+    <body class="container-fluid">
+        <div id="content" class="app row ">
+            
+            
+        </div> <!--  content -->
+
+        <div id="template" hidden >
+            <div class="home-page col-12 ">
+                <div class="header fixed-top row align-items-center">
+                    <div class="col-9">
+                        <span>Welcome</span>
+                        <h3 class="user-name"></h3>
+                    </div>
+                    <div class="notification-button col-3 text-end">
+                        <div class=" ratio ratio-1x1 position-relative">
+                            <div class="iconsax" icon-name="bell-1">
+                            </div>
+                            <span class="notification-button-dot position-absolute translate-middle badge border border-light rounded-circle bg-danger p-2">
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroller">
+                    <div class="balance-view text-center">
+                        <p>BALANCE</p>
+                        <p class="">
+                            <span class="user-balance h3">₦123,000.00</span>
+                            <span class="hide-balance iconsax" icon-name="eye" ></span>  
+                        </p>
+                    </div>
+        
+                    <div class="add-money-view text-center">
+                        <button type="button" class="btn btn-outline-primary to-fundwallet">
+                            <i class="iconsax rot-45" icon-name="arrow-circle-down"></i>
+                            Add Money
+                        </button>
+                    </div>
+        
+                    <div class="row service-row text-center mt-3">
+                        <div class="offset-1 col-10 row">
+                            <div class="col-3 to-airtime">
+                                <i class="iconsax" icon-name="phone"></i>
+                                <br/>
+                                <span>Airtime</span>
+                            </div>
+                            <div class="col-3 to-data">
+                                <i class="iconsax" icon-name="wifi"></i>
+                                <br/>
+                                <span>Data</span>
+                            </div>
+                            <div class="col-3 to-elec">
+                                <i class="iconsax" icon-name="flash"></i>
+                                <br/>
+                                <span>Electricity</span>
+                            </div>
+                            <div class="more-services col-3 to-payments">
+                                <div class="ratio ratio-1x1">
+                                    <div class="iconsax" icon-name="arrow-right"></div>
+                                </div>  
+                            </div>
+                        </div>
+                    </div><!--  service row -->
+                    
+                    <div class="trx-container row">
+                        
+                    </div><!-- trx container-->
+                    
+        
+                </div><!--  scroller -->
+            </div><!--  home-page -->
+
+            <div class="footer row text-center fixed-bottom">
+                <div class="offset-1 col-2 home-tab">
+                    <i class="iconsax" icon-name="home-1"></i>
+                    <br/>
+                    <span>Home</span>
+                </div>
+                <div class="col-2 payments-tab">
+                    <i class="iconsax" icon-name="wallet-2"></i>
+                    <br/>
+                    <span>Payments</span>
+                </div>
+                <div class=" col-2 cards-tab">
+                    <i class="iconsax" icon-name="bank-cards"></i>
+                    <br/>
+                    <span>Card</span>
+                </div>
+                <div class=" col-2 history-tab">
+                    <i class="iconsax" icon-name="refresh"></i>
+                    <br/>
+                    <span>History</span>
+                </div>
+                <div class=" col-2 profile-tab">
+                    <i class="iconsax" icon-name="user-1"></i>
+                    <br/>
+                    <span>Profile</span>
+                </div>
+            </div><!--  footer -->
+
+            <div class="row trx-line p-3">
+                <div class="col-2 icon">
+
+                </div>
+                <div class="col-4 overflow-hidden text-nowrap">
+                    <p class="service-name text-capitalize"></p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="amount"></p>
+                    <p class="date"></p>
+                </div>
+                <p class="desc offset-2 col-8"></p>
+            </div> <!-- end trx-line-->
+            
+            <div class="trx-icons">
+                <div class="iconsax electricity" icon-name="flash"></div>
+                <div class="iconsax data" icon-name="wifi"></div>
+                <div class="iconsax airtime" icon-name="phone"></div>
+                <div class="iconsax cable" icon-name="monitor"></div>
+                <div class="iconsax deposit" icon-name="wallet-add"></div>
+            </div> <!-- end trx-icons-->
+
+            <div class="payments-page">
+                <div class="pay-header row p-5 mb-3">
+                    <div class="balance-view">
+                        <p>BALANCE</p>
+                        <p class="">
+                            <span class="user-balance h3">₦123,000.00</span>
+                            <span class="hide-balance iconsax" icon-name="eye" ></span>  
+                        </p>
+                    </div>
+        
+                    <div class="add-money-view ">
+                        <button type="button" class="btn btn-primary to-fundwallet">
+                            <div class="iconsax " icon-name="wallet-2"></div>
+                            Fund Wallet
+                        </button>
+                    </div>
+                </div><!-- end pay-header-->
+
+                    <div class="section">
+                        <p class="topic">Airtime & Data</p>
+                        <div class="row service-line p-3  to-airtime">
+                            <div class="col-2 icon">
+                                <div class="iconsax deposit" icon-name="phone"></div>
+                            </div>
+                            <div class="col-8 overflow-hidden text-nowrap">
+                                <p class="service-name text-capitalize">
+                                    Airtime (VTU)
+                                </p>
+                            </div>
+                            <div class="col-2 icon">
+                                <div class="iconsax" icon-name="chevron-right"></div>
+                            </div>       
+                        </div> <!-- end service-line-->
+                        <div class="row service-line p-3  to-data">
+                            <div class="col-2 icon">
+                                <div class="iconsax deposit" icon-name="wifi"></div>
+                            </div>
+                            <div class="col-8 overflow-hidden text-nowrap">
+                                <p class="service-name text-capitalize">
+                                    Data Subscription
+                                </p>
+                            </div>
+                            <div class="col-2 icon">
+                                <div class="iconsax" icon-name="chevron-right"></div>
+                            </div>       
+                        </div> <!-- end service-line-->
+                    </div><!-- end section-->
+                    <div class="section">
+                        <p class="topic">Utility</p>
+                        <div class="row service-line p-3">
+                            <div class="col-2 icon">
+                                <div class="iconsax deposit" icon-name="monitor"></div>
+                            </div>
+                            <div class="col-8 overflow-hidden text-nowrap to-cable">
+                                <p class="service-name text-capitalize">
+                                    Cable Subscription
+                                </p>
+                            </div>
+                            <div class="col-2 icon">
+                                <div class="iconsax" icon-name="chevron-right"></div>
+                            </div>       
+                        </div> <!-- end service-line-->
+                        <div class="row service-line to-elec p-3">
+                            <div class="col-2 icon">
+                                <div class="iconsax deposit" icon-name="flash"></div>
+                            </div>
+                            <div class="col-8 overflow-hidden text-nowrap">
+                                <p class="service-name text-capitalize">
+                                    Electricity Bill
+                                </p>
+                            </div>
+                            <div class="col-2 icon">
+                                <div class="iconsax" icon-name="chevron-right"></div>
+                            </div>       
+                        </div> <!-- end service-line-->
+                    </div><!-- end section-->
+            </div><!-- payments-page-->
+
+            <div class="airtime-page">
+                <div class="row service-header mb-5 mt-5">
+                    <div class="col-2 back-button">
+                        <div class="iconsax go-back" icon-name="chevron-left"></div>
+                    </div>
+                    <div class="col-8 text-center">
+                        Buy Airtime
+                    </div>
+                </div>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control phone" placeholder="Input phone number" aria-label="phone" aria-describedby="">
+                        <span class="input-group-text iconsax col-2" icon-name="user-2"></span>
+                    </div>
+                    <button type="button" class="input-group pop-network p-0 mb-3" >
+                        <span class="input-group-text col-10">
+                            <img src="" class="me-3" />
+                            <span class="network-name"> Select Mobile carrier</span>
+                        </span> 
+                        <span class="input-group-text col-2 iconsax" icon-name="chevron-down"></span>
+                    </button>
+
+                    <input class="network" hidden  readonly>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control amount" placeholder="Enter amount" aria-label="amount" aria-describedby="">
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary  buy-airtime-button">Continue</button>
+
+                </form>
+            </div><!-- airtime-page-->
+
+            <div class="data-page">
+                <div class="row service-header mb-5 mt-5">
+                    <div class="col-2 back-button">
+                        <div class="iconsax go-back" icon-name="chevron-left "></div>
+                    </div>
+                    <div class="col-8 text-center">
+                        Buy Internet Data
+                    </div>
+                </div>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control phone" placeholder="Input phone number" aria-label="phone" aria-describedby="">
+                        <span class="input-group-text iconsax col-2" icon-name="user-2"></span>
+                    </div>
+                    <button type="button" class="input-group pop-network p-0 mb-3" >
+                        <span class="input-group-text col-10">
+                            <img src="" class="me-3" />
+                            <span class="network-name"> Select Internet carrier</span>
+                        </span> 
+                        <span class="input-group-text col-2 iconsax" icon-name="chevron-down"></span>
+                    </button>
+
+                    <input class="network_id" hidden  readonly>
+                    <input class="network_name" hidden  readonly>
+
+                    <div class="input-group mb-3">
+                        <select class="form-select plan_id" aria-label="">
+                            <option selected class="default">Select Data Plan</option>
+                          
+                          </select>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary  buy-data-button">Continue</button>
+
+                </form>
+            </div><!-- data-page-->
+
+            <div class="cable-page">
+                <div class="row service-header mb-5 mt-5">
+                    <div class="col-2 back-button">
+                        <div class="iconsax go-back" icon-name="chevron-left "></div>
+                    </div>
+                    <div class="col-8 text-center">
+                        Cable TV
+                    </div>
+                </div>
+                <form>
+                   
+
+                    <div class="input-group mb-3">
+                        <select class="form-select service_id cable_network" aria-label="">
+                            <option selected class="default">Select TV Network</option>
+                            <option value="dstv" class="">DSTV</option>
+                            <option value="gotv" class="">Go TV</option>
+                            <option value="startimes" class="">Start Times</option>
+                            <option value="showmax" class="">Show Max</option>
+                          </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <select class="form-select var_code" aria-label="">
+                            <option selected class="default">Select Subscription Plan</option>
+                          
+                          </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control card_no" placeholder="Card Number" aria-label="phone" aria-describedby="">
+                        <span class="input-group-text iconsax col-2" icon-name="user-2"></span>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control phone" placeholder="Input phone number" aria-label="phone" aria-describedby="">
+                        <span class="input-group-text iconsax col-2" icon-name="user-2"></span>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary  to-confirm-cable-button">Continue</button>
+
+                </form>
+            </div><!-- cable-page-->
+
+            <div class="elec-page">
+                <div class="row service-header mb-5 mt-5">
+                    <div class="col-2 back-button">
+                        <div class="iconsax go-back" icon-name="chevron-left "></div>
+                    </div>
+                    <div class="col-8 text-center">
+                        Electricity
+                    </div>
+                </div>
+                <form>
+                   
+
+                    <div class="input-group mb-3">
+                        <select class="form-select service_id" aria-label="">
+                            <option selected class="default">Select Service Provider</option>
+                            <option value="abuja-electric" class="">Abuja AEDC</option>
+                            <option value="eko-electric" class="">Eko Electric</option>
+                            <option value="ikeja-electric" class="">Ikeja Electricity</option>
+                            <option value="kano-electric" class="">Kano Electricity</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <select class="form-select var_code" aria-label="">
+                            <option selected class="default">Select Meter Type</option>
+                            <option value="prepaid" class="">Prepaid</option>
+                            <option value="postpaid" class="">Postpaid</option>
+                          </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control meter_no" placeholder="Meter Number" aria-label="phone" aria-describedby="">
+                        <span class="input-group-text iconsax col-2" icon-name="user-2"></span>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control amount" placeholder="Enter Amount" aria-label="phone" aria-describedby="">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control phone" placeholder="Input phone number" aria-label="phone" aria-describedby="">
+                        <span class="input-group-text iconsax col-2" icon-name="user-2"></span>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary  to-confirm-elec-button">Continue</button>
+
+                </form>
+            </div><!-- elec-page-->
+
+
+            <div class="network-choice mb-3 border-bottom p-2" network-id="mtn">
+                <img src="img/services/mtn.png" class="col-2 me-5">
+                <span class="network-name text-uppercase">MTN</span>
+            </div><!-- end network choice-->
+
+            <div class="trxpin-dot col-2">*</div>
+            
+            <div class="trx-history-template">
+                <div class="row mt-5">
+                    <div class="col-6">Recent Transactions</div>
+                    <div class="col-6 text-end to-history"> See all <i class="iconsax" icon-name="arrow-right"></i> </div>
+                </div><!-- trx btns-->
+    
+                <div class="trx-history row">
+                    <div class="empty-trx-history">
+                        <img class="offset-2 col-8" src="img/dash/empty-trx.png" />
+                        <p class="offset-2 col-8 text-center">
+                            When you perform a transaction you can track it here
+                        </p>
+                    </div>
+                </div><!--  trx history -->
+            </div><!--  trx history template-->
+
+            <div class="history-page">
+                <div class="row text-center m-4">
+                    <div class="offset-2 col-8">History</div>
+                    <div class="col-2 iconsax launch-trx-filter" icon-name="sort"></div>
+                </div>
+                <div class="trx-container"></div>
+            </div>
+
+            <div class="fundwallet-page">
+                <div class="row service-header mb-5 mt-5">
+                    <div class="col-2 back-button">
+                        <div class="iconsax go-back" icon-name="chevron-left"></div>
+                    </div>
+                    <div class="col-8 text-center">
+                        Fund Wallet
+                    </div>
+                </div>
+                <div class="">Bank Transfer</div>
+                <div class="user-banks">
+
+                </div>
+            </div><!-- fundwallet-page-->
+
+
+        </div>  <!-- end template-->
+        
+        <div id="network-modal" class="modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h5 class="modal-title w-100">Select mobile carrier</h5>
+                </div>
+                <div class="modal-body">  
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+        </div><!-- end network-modal-->
+
+        <div id="trxpin-modal" class="modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h5 class="modal-title w-100">Enter PIN</h5>
+                </div>
+                <div class="modal-body text-center"> 
+                    <div class="trxpin-dots row">
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row m-4">
+                        <div class="col-4 trxpin-num" data-num="1">1</div>
+                        <div class="col-4 trxpin-num" data-num="2">2</div>
+                        <div class="col-4 trxpin-num" data-num="3">3</div>
+                    </div> 
+                    <div class="row m-4">
+                        <div class="col-4 trxpin-num" data-num="4">4</div>
+                        <div class="col-4 trxpin-num" data-num="5">5</div>
+                        <div class="col-4 trxpin-num" data-num="6">6</div>
+                    </div> 
+                    <div class="row m-4">
+                        <div class="col-4 trxpin-num" data-num="7">7</div>
+                        <div class="col-4 trxpin-num" data-num="8">8</div>
+                        <div class="col-4 trxpin-num" data-num="9">9</div>
+                    </div> 
+                    <div class="row m-4">
+                        <div class="col-4 trxpin-num offset-4" data-num="0">0</div>
+                        <div class="col-4 trxpin-bs">
+                            <span class="iconsax" icon-name="chevron-left"></span>
+                        </div>
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+        </div><!-- end trxpin-modal-->
+
+
+        <div id="loading-modal" class="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h5 class="modal-title w-100">Wait</h5>
+                </div>
+                <div class="modal-body text-center"> 
+                    <img src="img/spinner.png" class="loading"> 
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+        </div><!-- end loading-modal-->
+        
+        <div id="receipt-modal" class="modal"  tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h5 class="modal-title w-100 the-status"></h5>
+                </div>
+                <div class="modal-body"> 
+                    <p class="the-service"></p>
+                    <p class="the-amount"></p>
+                    <p class="the-product"></p>
+                    <p class="the-sub_vendor"></p>
+                    <p class="the-beneficiary"></p>
+                    <p class="the-token"></p>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn">Share</button>
+                    <button type="button" class="btn to-home" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+              </div>
+            </div>
+        </div><!-- end receipt-modal-->
+
+        <div id="cable-confirm-modal" class="modal"  tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h5 class="modal-title w-100 "></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <span class="col-6">TV Service</span>
+                        <span class="the-sub_vendor col-6"></span>
+                    </div>
+                    <div class="row">
+                        <span class="col-6">Package</span>
+                        <span class="the-package col-6"></span>
+                    </div>
+                    <div class="row">
+                        <span class="col-6">Card Number</span>
+                        <span class="the-card_no col-6"></span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-6">PhoneNumber</span>
+                        <span class="the-phone col-6"></span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-6">Card Name</span>
+                        <span class="the-card_name col-6"></span>
+                    </div>
+                    <div class="row">
+                        <span class="col-6">Amount</span>
+                        <span class="the-amount col-6"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn col-12 buy-cable-button">Confrim</button>
+                    <button type="button" class="btn col-12" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                </div>
+              </div>
+            </div>
+        </div><!-- end cable-confirm-modal-->
+
+        <div id="elec-confirm-modal" class="modal"  tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h5 class="modal-title w-100 "></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <span class="col-6">Electricity Service</span>
+                        <span class="the-sub_vendor col-6"></span>
+                    </div>
+                    
+                    <div class="row">
+                        <span class="col-6">Meter Number</span>
+                        <span class="the-meter_no col-6"></span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-6">Meter Name</span>
+                        <span class="the-meter_name col-6"></span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-6">Address</span>
+                        <span class="the-address col-6"></span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-6">Phone Number</span>
+                        <span class="the-phone col-6"></span>
+                    </div>
+
+                    <div class="row">
+                        <span class="col-6">Amount</span>
+                        <span class="the-amount col-6"></span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn col-12 buy-elec-button">Confrim Details</button>
+                    <button type="button" class="btn col-12" data-bs-dismiss="modal">
+                        Cancel Transaction
+                    </button>
+                </div>
+              </div>
+            </div>
+        </div><!-- end elec-confirm-modal-->
+
+        <div id="trxfilter-modal" class="modal"  tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h5 class="modal-title w-100 "> Filter</h5>
+                </div>
+                <div class="modal-body"> 
+                   <form>
+                        <div class="">
+                            Transaction Types
+                        </div>
+                        <div class="trx-types-check row">
+                           
+                                <div class="col-6 form-check">
+                                    <input class="form-check-input trx-all" checked type="checkbox" value="all" id="">
+                                    <label class="form-check-label" for="">
+                                        All
+                                    </label>
+                                </div>
+                                <div class="col-6 form-check">
+                                    <input class="form-check-input trx-cable " type="checkbox" value="cable" id="">
+                                    <label class="form-check-label" for="">
+                                        Cable
+                                    </label>
+                                </div>
+                            
+                           
+                            <div class="col-6 form-check ">
+                                <input class="form-check-input trx-airtime " type="checkbox" value="airtime" id="">
+                                <label class="form-check-label" for="">
+                                   Airtime
+                                </label>
+                            </div>
+                            <div class="col-6 form-check ">
+                                <input class="form-check-input trx-elec " type="checkbox" value="elec" id="">
+                                <label class="form-check-label" for="">
+                                    Electricity
+                                </label>
+                            </div>
+                            <div class="col-6 form-check ">
+                                <input class="form-check-input trx-data " type="checkbox" value="data" id="">
+                                <label class="form-check-label" for="">
+                                    Data
+                                </label>
+                            </div>
+                            <div class="col-6 form-check ">
+                                <input class="form-check-input trx-transfer " type="checkbox" value="transfer" id="">
+                                <label class="form-check-label" for="">
+                                    Transfers
+                                </label>
+                            </div>
+                        </div> <!--end trx types-->
+
+                        <div class="">
+                            Amount
+                        </div>
+                        <div class="m-3">
+                            <div id="trxAmountSlider"></div>
+                        </div>
+                        
+
+                        <div class="row trx-history-amount">
+                            <div class="mb-3 col-6">
+                                <label for="" class="form-label">Minimum Amount</label>
+                                <div class="input-group">
+                                  <span class="input-group-text" id="">NGN</span>
+                                  <input type="text" class="form-control min-amount" id="" aria-describedby="">
+                                </div>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label for="" class="form-label">Maximum Amount</label>
+                                <div class="input-group">
+                                  <span class="input-group-text" id="">NGN</span>
+                                  <input type="text" class="form-control max-amount" id="" aria-describedby="">
+                                </div>
+                            </div>
+                        </div><!--end trx range-->
+
+                        <div class="">
+                            Dates
+                        </div>
+                        <div class="trx-dates-check row">
+                           
+                                <div class="col-6 form-check date-today">
+                                    <input class="form-check-input" type="checkbox" value="today" id="">
+                                    <label class="form-check-label" for="">
+                                        Today
+                                    </label>
+                                    <div class="form-text date-text" id="">01/01/2024</div>
+                                </div>
+                                <div class="col-6 form-check date-last-week">
+                                    <input class="form-check-input"  type="checkbox" value="last-week" id="">
+                                    <label class="form-check-label" for="">
+                                        Last Weeek
+                                    </label>
+                                    <div class="form-text date-text" id="">01/01/2024</div>
+                                </div>
+                                <div class="col-6 form-check date-last-month">
+                                    <input class="form-check-input"  type="checkbox" value="last-month" id="">
+                                    <label class="form-check-label" for="">
+                                        Last Month
+                                    </label>
+                                    <div class="form-text date-text" id="">01/01/2024</div>
+                                </div>
+                                <div class="col-6 form-check date-custom">
+                                    <input class="form-check-input" checked type="checkbox" value="custom" id="">
+                                    <label class="form-check-label" for="">
+                                        Custom
+                                    </label>
+                                    <div class="form-text date-text" id="">01/01/2024</div>
+                                </div>
+
+                                
+                        <div class="row custom-dates">
+                            <div class="mb-3 col-6 start-date ">
+                                <label for="" class="form-label">Start Date</label>
+                                <div class="input-group">
+                                  <input type="date" class="form-control ">
+                                </div>
+                            </div>
+                            <div class="mb-3 col-6 end-date">
+                                <label for="" class="form-label">End Date</label>
+                                <div class="input-group">
+                                  <input type="date" class="form-control ">
+                                </div>
+                            </div>
+                        </div><!--end custom dates-->
+
+                                
+
+                        </div> <!--end trx dates-->
+
+                           
+                   </form>
+
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-primary history-filter-submit-button">View Transactions</button>
+                    <br>
+                    <button type="button" class="btn btn-white " data-bs-dismiss="modal">
+                        Clear All
+                    </button>
+                </div>
+              </div>
+            </div>
+        </div><!-- end trxfilter-modal-->
+
+        <script src="cordova.js"></script>
+        <script src="js/paymita.js"></script>
+        <script src="vendors/jquery.min.js"></script>
+        <script src="vendors/nouislider/nouislider.min.js"></script>
+        <script src="vendors/iconsax-gh-pages/geticons.js"></script>
+        <script src="vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="js/dash.js"></script>
+    </body>
+</html>
